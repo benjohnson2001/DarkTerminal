@@ -3,9 +3,7 @@
 
 #### notes:
 
-WALTER fonts 1-8 are not used, every font specified in the theme uses the "Volume/pan label" font.
-
-I'm using the font "ClassicVGA,Medium,20" on mac. You can probably find an equivalent system font if you're on windows or linux.
+WALTER fonts 1-8 are not used, every font specified in the theme uses the "Volume/pan label" font. I'm using the font ClassicVGA, size 20.
 
 ![tcp](tcp.png)
 ![mcp](mcp.png)
