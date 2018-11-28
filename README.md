@@ -9,3 +9,4 @@ I'm using the font "ClassicVGA,Medium,20" on mac. You can probably find an equiv
 
 ![tcp](tcp.png)
 ![mcp](mcp.png)
+![remove toolbars](removeToolbars.gif)
