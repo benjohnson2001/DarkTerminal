@@ -12,7 +12,7 @@ mcp:
 
 #### fonts:
 
-Note that WALTER fonts 1-8 are not used, every font specified in WALTER uses the "Volume/pan label" font.
+Note that WALTER fonts 1-8 are not used, every font specified in WALTER uses the "Volume/pan label" font. I'm also on a Mac, you might have to adjust font sizes if you're on a different OS.
 
 - Volume/pan label font: ClassicVGA, Medium, 20         [download](https://github.com/benjohnson2001/DarkTerminal/raw/master/ClassicVGA.ttf)
 - Timeline font: Press Start 2P, Regular, 9         [download](https://github.com/benjohnson2001/DarkTerminal/raw/master/press-start-2p.regular.ttf)
