@@ -1,0 +1,1162 @@
+#>----------------------------------- GLOBALS -----------------------------------------
+
+;global_scale 2.0
+
+version 5
+tinttcp 0
+peaksedges 0
+
+use_pngs 1
+use_overlays 0
+tcp_showborders 0
+mcp_showborders 0
+transport_showborders 0
+tcp_vupeakwidth 1
+mcp_vupeakheight 2
+mcp_mastervupeakheight 4
+mcp_altmeterpos 0 ; deprecated
+tcp_vol_zeroline 85000000
+tcp_pan_zeroline 85000000
+tcp_width_zeroline 85000000
+mcp_vol_zeroline 85000000
+mcp_pan_zeroline 85000000 
+mcp_width_zeroline 85000000
+trans_speed_zeroline 85000000
+gen_vol_zeroline FF000000
+gen_pan_zeroline FF000000
+item_volknobfg FF000000 FF000000 FF000000
+tcp_voltext_flags 12
+tcp_master_voltext_flags 12
+mcp_voltext_flags 13
+mcp_master_voltext_flags 13
+vertfont_topdown 1
+no_meter_reclbl 1
+mcp_min_height 199
+envcp_min_height 28
+tcp_master_minheight 72
+tcp_heights 5 28 39 62 ; supercollapsed, 
+collapsed, small(norecarm), recarm size
+tcp_folderindent 13
+
+
+
+
+
+
+
+
+
+set buttonSize [20 20 20 20]
+
+
+
+; -----------:: TCP ::---------------
+
+
+; track widths smaller than this will trigger rearranging
+set minimumTcpWidth [225]
+
+; track widths smaller than minimumTcpWidth that also have track heights smaller than this value will hide the pan fader and rearrange the volume fader
+set minimumTcpHeight [120]
+
+
+
+set leftTcpButtonMargin [5 3 0 0]
+set rightTcpButtonMargin [5 3 0 0]
+set folderMargin [17 0 0 0]
+
+macro setTcpButtonFromLeft element i j
+  set element + leftTcpButtonMargin * buttonSize [i j 1 1]
+endmacro
+
+macro setTcpButton element i j
+
+  set rowIndex w>minimumTcpWidth{0} j + j 1
+  
+  set temp + rightTcpButtonMargin * buttonSize [i rowIndex 1 1]
+  set normalXMargin - tcp.size{0} + + temp{x} folderMargin{x} buttonSize{w}
+  set compressedXMargin - tcp.size{0} 100
+  
+  set xMargin w>minimumTcpWidth{0} normalXMargin compressedXMargin
+  
+  set elementFromTheRight [xMargin temp temp temp 1 0 1 0]
+  set elementFromTheLeft + leftTcpButtonMargin * buttonSize [i rowIndex 1 1]
+  
+  set element w>minimumTcpWidth{0} elementFromTheRight h>47 elementFromTheLeft [0]
+endmacro
+
+macro setTcpMeter
+  set tcp.meter [-4 -4 1 1 0 0 0 0] ; hide the tcp meter
+endmacro
+
+macro setTcpRecArm
+  setTcpButtonFromLeft tcp.recarm 0 0
+endmacro
+
+macro setTcpLabel
+
+  set normalTcpLabel - tcp.size{0} + 153 folderMargin{0}
+  set compressedTcpLabel - tcp.size{0} + 12 folderMargin{0}
+
+  set tcpLabelWidth w>minimumTcpWidth{0} normalTcpLabel compressedTcpLabel
+  set tcp.label [26 4 tcpLabelWidth 16 0 0 1 0]
+  set tcp.label.margin [0 0 0 0 0.5 0]
+  set tcp.label.color [215 215 215]
+endmacro
+
+macro setTcpSolo
+  setTcpButton tcp.solo 0 0
+endmacro
+
+macro setTcpMute
+  setTcpButton tcp.mute 1 0
+endmacro
+
+macro setTcpEnv
+  setTcpButton tcp.env 2 0
+endmacro
+
+macro setTcpIo
+  setTcpButton tcp.io 3 0
+endmacro
+
+macro setTcpFx
+  setTcpButton tcp.fx 4 0
+endmacro
+
+macro setTcpFxIn
+  setTcpButton tcp.fxin 5 0
+endmacro
+
+macro setTcpFolderCompress
+  set folderCompressX - tcp.size{0} 20
+  set tcp.foldercomp [folderCompressX 2 18 15 1 0 1 0]
+endmacro
+
+macro setTcpFxParm
+  set fxParmWidth * 7 / w 8
+  
+  set minimumTcpFxParmHeight w>minimumTcpWidth{0} [105] [145]
+  set tcpFxParmY w>minimumTcpWidth{0} 35 45
+  
+  set tcp.fxparm h>minimumTcpFxParmHeight{0} + leftTcpButtonMargin [5 tcpFxParmY fxParmWidth 26 0 0 0 0] [0]
+  set tcp.fxparm.margin [0 0 0 0 0 0]
+  set tcp.fxparm.font [-1]
+endmacro
+
+macro setTcpVolumeFader
+
+  set normalVolumeWidth / tcp.size{0} 2
+  set normalVolume [6 59 normalVolumeWidth 14 0 1 1 1]
+  
+  set compressedVolumeWidth - tcp.size{0} + 12 folderMargin{x}
+  
+  set compressedVolumeY h>minimumTcpHeight{0} [29] [59]
+  set compressedVolume [6 compressedVolumeY{0} compressedVolumeWidth 14 0 1 1 1]
+  
+  set tcp.volume h>70 w>minimumTcpWidth{0} normalVolume h>90 compressedVolume [0] [0]
+  
+  set tcp.volume.color [215 215 215 0 215 215 215 0]
+  set tcp.volume.fadermode [-1]
+endmacro
+
+macro setTcpVolumeLabel
+  
+  set normalVolumeLabel [10 77 250 14 0 1 1 1]
+  
+  set compressedVolumeLabelY h>minimumTcpHeight{0} [43] [77]
+  set compressedVolumeLabel [10 compressedVolumeLabelY{0} 250 14 0 1 1 1]
+
+  set tcp.volume.label h>70 w>minimumTcpWidth{0} normalVolumeLabel h>90 compressedVolumeLabel [0] [0]
+  set tcp.volume.label.color [215 215 215 0]
+  set tcp.volume.label.margin [0 0 0 0 0 0]
+endmacro
+
+macro setTcpPanFader
+
+  set normalPan [172 60 100 12 1 1 1 1]
+  
+  set compressedPanWidth - tcp.size{0} + 12 folderMargin{0}
+  set compressedPan [6 65 compressedPanWidth 12 0 1 1 1]
+
+  set tcp.pan h>70 w>minimumTcpWidth{0} normalPan h>minimumTcpHeight{0} compressedPan [0] [0]
+  set tcp.pan.color [215 215 215 0 215 215 215 0]
+  set tcp.pan.fadermode [-1]
+endmacro
+
+macro setTcpPanLabel
+
+  set normalPanLabel [172 77 100 14 1 1 1 1]
+  set compressedPanLabelWidth - tcp.size{0} + 29 folderMargin{0]
+  set compressedPanLabel [6 77 compressedPanLabelWidth 14 0 1 1 1]
+
+  set tcp.pan.label h>70 w>minimumTcpWidth{0} normalPanLabel h>minimumTcpHeight{0} compressedPanLabel [0] [0]
+  set tcp.pan.label.color [215 215 215 0]
+  set tcp.pan.label.margin [0 0 0 0 0.5 0.5]
+endmacro
+
+macro setTcpFolderButton
+  set folderX - tcp.size{0} 20
+  set folderY - tcp.size{1} 19
+  set tcp.folder folderstate=1 h>40 [folderX folderY 18 15 1 1 1 1] [0] [0]
+endmacro
+
+macro explicitlyRemoveUnusedTcpElements
+  set tcp.phase [0]
+  set tcp.width [0]
+  set tcp.recinput [0]
+  set tcp.recmode [0]
+  set tcp.recmon [0]
+  set tcp.trackidx [0]
+  set tcp.fxbyp [0]
+endmacro
+
+clear tcp.*
+
+
+; 146 is the width where the right edge of the fader is flush with the right edge of the rightmost tcp button
+
+set tcp.size [300 100 50]
+
+; top row
+  
+  setTcpMeter
+  
+  setTcpRecArm
+  setTcpLabel
+
+  setTcpSolo
+  setTcpMute
+  setTcpEnv
+  setTcpIo
+  setTcpFx
+  setTcpFxIn
+  setTcpFolderCompress
+
+
+; middle row
+
+  setTcpFxParm
+  
+; bottom row
+
+  setTcpVolumeFader
+  setTcpVolumeLabel
+  
+  setTcpPanFader
+  setTcpPanLabel
+  
+  setTcpFolderButton
+
+; misc
+
+  explicitlyRemoveUnusedTcpElements
+  front tcp.pan.label
+ 
+
+Layout "1. normal"
+  set tcp.label tcp.label
+EndLayout
+
+
+Layout "2. label"
+
+  clear tcp.*                     
+
+  set tcp.size [300 100]    
+  set tcpLabelMessageY - / h 2 12
+  set tcpLabelMessageWidth - w + folderMargin{x} 2
+  
+  set tcp.label [0 tcpLabelMessageY tcpLabelMessageWidth 20 0 0 0 0]
+  set tcp.label.margin [0 0 0 0 0.5 0.5]
+  set tcp.label.color [215 215 215 0]
+
+  set folderCompressX - tcp.size{0} 20
+  set tcp.foldercomp [folderCompressX 2 18 15 1 0 1 0]
+
+  set folderX - tcp.size{0} 20
+  set folderY - tcp.size{1} 19
+  set tcp.folder folderstate=1 h>40 [folderX folderY 18 15 1 1 1 1] [0] [0]
+EndLayout
+
+
+
+
+
+
+
+
+
+
+
+
+; -----------:: MASTER TCP ::--------------
+
+
+
+
+
+; track widths smaller than this will trigger rearranging
+set minimumMasterTcpWidth [225]
+
+; track widths smaller than minimumMasterTcpWidth that also have track heights smaller than this value will hide the pan fader and rearrange the volume fader
+set minimumMasterTcpHeight [120]
+
+
+
+set leftMasterTcpButtonMargin [5 3 0 0]
+set rightMasterTcpButtonMargin [5 3 0 0]
+set folderMargin [0 0 0 0]
+
+macro setMasterTcpButtonFromLeft element i j
+  set element + leftMasterTcpButtonMargin * buttonSize [i j 1 1]
+endmacro
+
+macro setMasterTcpButton element i j
+
+  set rowIndex w>minimumMasterTcpWidth{0} j + j 1
+  
+  set temp + rightMasterTcpButtonMargin * buttonSize [i rowIndex 1 1]
+  set normalXMargin - master.tcp.size{0} + + temp{x} folderMargin{x} buttonSize{w}
+  set compressedXMargin - master.tcp.size{0} 100
+  
+  set xMargin w>minimumMasterTcpWidth{0} normalXMargin compressedXMargin
+  
+  set elementFromTheRight [xMargin temp temp temp 1 0 1 0]
+  set elementFromTheLeft + leftMasterTcpButtonMargin * buttonSize [i rowIndex 1 1]
+  
+  set element w>minimumMasterTcpWidth{0} elementFromTheRight h>47 elementFromTheLeft [0]
+endmacro
+
+macro setMasterTcpMeter
+  set master.tcp.meter [-4 -4 1 1 0 0 0 0] ; hide the tcp meter
+endmacro
+
+macro setMasterTcpLabel
+
+  set normalMasterTcpLabel - master.tcp.size{0} + 153 folderMargin{0}
+  set compressedMasterTcpLabel - master.tcp.size{0} + 12 folderMargin{0}
+
+  set tcpLabelWidth w>minimumMasterTcpWidth{0} normalMasterTcpLabel compressedMasterTcpLabel
+  set master.tcp.label [26 4 tcpLabelWidth 16 0 0 1 0]
+  set master.tcp.label.margin [0 0 0 0 0.5 0]
+  set master.tcp.label.color [215 215 215]
+endmacro
+
+macro setMasterTcpSolo
+  setMasterTcpButton master.tcp.solo 0 0
+endmacro
+
+macro setMasterTcpMute
+  setMasterTcpButton master.tcp.mute 1 0
+endmacro
+
+macro setMasterTcpEnv
+  setMasterTcpButton master.tcp.env 2 0
+endmacro
+
+macro setMasterTcpIo
+  setMasterTcpButton master.tcp.io 3 0
+endmacro
+
+macro setMasterTcpFx
+  setMasterTcpButton master.tcp.fx 4 0
+endmacro
+
+macro setMasterTcpFxIn
+  setMasterTcpButton master.tcp.fxin 5 0
+endmacro
+
+macro setMasterTcpMono
+
+  set monoButtonX - master.tcp.size{0} 138
+  set normalMonoButton [monoButtonX 3 33 20 1 0 1 0]
+  
+  set compressedMonoButton [105 23 33 20]
+  
+  set master.tcp.mono w>minimumMasterTcpWidth{0} normalMonoButton compressedMonoButton
+endmacro
+
+macro setMasterTcpFolderCompress
+  set folderCompressX - master.tcp.size{0} 20
+  set master.tcp.foldercomp [folderCompressX 2 18 15 1 0 1 0]
+endmacro
+
+macro setMasterTcpFxParm
+  set fxParmWidth * 7 / w 8
+  
+  set minimumMasterTcpFxParmHeight w>minimumMasterTcpWidth{0} [105] [145]
+  set tcpFxParmY w>minimumMasterTcpWidth{0} 35 45
+  
+  set master.tcp.fxparm h>minimumMasterTcpFxParmHeight{0} + leftMasterTcpButtonMargin [5 tcpFxParmY fxParmWidth 26 0 0 0 0] [0]
+  set master.tcp.fxparm.margin [0 0 0 0 0 0]
+  set master.tcp.fxparm.font [-1]
+endmacro
+
+macro setMasterTcpVolumeFader
+
+  set normalVolumeWidth / master.tcp.size{0} 2
+  set normalVolume [6 59 normalVolumeWidth 14 0 1 1 1]
+  
+  set compressedVolumeWidth - master.tcp.size{0} + 12 folderMargin{x}
+  
+  set compressedVolumeY h>minimumMasterTcpHeight{0} [29] [59]
+  set compressedVolume [6 compressedVolumeY{0} compressedVolumeWidth 14 0 1 1 1]
+  
+  set master.tcp.volume h>70 w>minimumMasterTcpWidth{0} normalVolume h>90 compressedVolume [0] [0]
+  
+  set master.tcp.volume.color [215 215 215 0 215 215 215 0]
+  set master.tcp.volume.fadermode [-1]
+endmacro
+
+macro setMasterTcpVolumeLabel
+  
+  set normalVolumeLabel [10 77 250 14 0 1 1 1]
+  
+  set compressedVolumeLabelY h>minimumMasterTcpHeight{0} [43] [77]
+  set compressedVolumeLabel [10 compressedVolumeLabelY{0} 250 14 0 1 1 1]
+
+  set master.tcp.volume.label h>70 w>minimumMasterTcpWidth{0} normalVolumeLabel h>90 compressedVolumeLabel [0] [0]
+  set master.tcp.volume.label.color [215 215 215 0]
+  set master.tcp.volume.label.margin [0 0 0 0 0 0]
+endmacro
+
+macro setMasterTcpPanFader
+
+  set normalPan [172 60 100 12 1 1 1 1]
+  
+  set compressedPanWidth - master.tcp.size{0} + 12 folderMargin{0}
+  set compressedPan [6 65 compressedPanWidth 12 0 1 1 1]
+
+  set master.tcp.pan h>70 w>minimumMasterTcpWidth{0} normalPan h>minimumMasterTcpHeight{0} compressedPan [0] [0]
+  set master.tcp.pan.color [215 215 215 0 215 215 215 0]
+  set master.tcp.pan.fadermode [-1]
+endmacro
+
+macro setMasterTcpPanLabel
+
+  set normalPanLabel [172 77 100 14 1 1 1 1]
+  set compressedPanLabelWidth - master.tcp.size{0} + 29 folderMargin{0]
+  set compressedPanLabel [6 77 compressedPanLabelWidth 14 0 1 1 1]
+
+  set master.tcp.pan.label h>70 w>minimumMasterTcpWidth{0} normalPanLabel h>minimumMasterTcpHeight{0} compressedPanLabel [0] [0]
+  set master.tcp.pan.label.color [215 215 215 0]
+  set master.tcp.pan.label.margin [0 0 0 0 0.5 0.5]
+endmacro
+
+macro setMasterTcpFolderButton
+  set folderX - master.tcp.size{0} 20
+  set folderY - master.tcp.size{1} 19
+  set master.tcp.folder folderstate=1 h>40 [folderX folderY 18 15 1 1 1 1] [0] [0]
+endmacro
+
+macro explicitlyRemoveUnusedMasterTcpElements
+  set master.tcp.phase [0]
+  set master.tcp.width [0]
+  set master.tcp.recinput [0]
+  set master.tcp.recmode [0]
+  set master.tcp.recmon [0]
+  set master.tcp.trackidx [0]
+  set master.tcp.fxbyp [0]
+endmacro
+
+clear master.tcp.*
+
+
+; 146 is the width where the right edge of the fader is flush with the right edge of the rightmost tcp button
+
+set master.tcp.size [300 100 50]
+
+; top row
+  
+  setMasterTcpMeter
+  
+  setMasterTcpLabel
+
+  setMasterTcpSolo
+  setMasterTcpMute
+  setMasterTcpEnv
+  setMasterTcpIo
+  setMasterTcpFx
+  setMasterTcpFxIn
+  setMasterTcpMono
+  setMasterTcpFolderCompress
+
+
+; middle row
+
+  setMasterTcpFxParm
+  
+; bottom row
+
+  setMasterTcpVolumeFader
+  setMasterTcpVolumeLabel
+  
+  setMasterTcpPanFader
+  setMasterTcpPanLabel
+  
+  setMasterTcpFolderButton
+
+; misc
+
+  explicitlyRemoveUnusedMasterTcpElements
+  front master.tcp.pan.label
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+; -----------:: ENVELOPE ::--------------
+
+
+set envMargin [18 0 0 0]
+set leftEnvButtonMargin [0 3 0 0]
+set rightEnvButtonMargin [2 3 0 0]
+
+macro setEnvButtonFromLeft element i j
+  set element + envMargin + leftEnvButtonMargin * buttonSize [i j 1 1]
+endmacro
+
+macro setEnvButtonFromRight element i j
+  set temp + rightEnvButtonMargin * buttonSize [i j 1 1]
+  set xMargin - envcp.size{0} + temp{x} buttonSize{w}
+  set element [xMargin temp temp temp 1 0 1 0]
+endmacro
+
+macro setFxEnvButtonFromRight element i j
+  set temp + rightEnvButtonMargin * buttonSize [i j 1 1]
+  set xMargin - envcp.size{0} + temp{x} buttonSize{w}
+  set element envcp_type=4 [xMargin temp temp temp 1 0 1 0] [0]
+endmacro
+
+
+clear envcp.*
+set envcp.size [300 100]
+
+setEnvButtonFromLeft envcp.arm 0 0
+
+set envLabelWidth - tcp.size{0} 125
+set envLabelX + + envMargin rightEnvButtonMargin * buttonSize + [1 1 1 1] [i j 1 1]
+
+set envcp.label [envLabelX 4 envLabelWidth 16 0 0 1 0]
+set envcp.label.margin [0 0 0 0 0.5 0]
+set envcp.label.color [215 215 215]
+
+setEnvButtonFromRight envcp.hide 0 0
+setEnvButtonFromRight envcp.bypass 1 0
+
+setFxEnvButtonFromRight envcp.learn 2 0
+setFxEnvButtonFromRight envcp.mod 3 0
+
+set envcp.label.color [215 215 215]
+set envcp.value.color [215 215 215]
+set envcp.fader.color [0 0 0 0 0 0 0 0]
+
+
+set envFaderX - envLabelX 20
+set envFaderWidth / * envcp.size{0} 2 3
+
+set envcp.fader h>60 [envFaderX 72 envFaderWidth 12 0 1 1 1] [0]
+set envcp.fader.color [0 0 0 0 0 0 0 0]
+
+
+set envLabelX - envcp.size{0} 80
+set envLabelY - envcp.size{1} 30
+set envLabelWidth / * envcp.size{0} 1 4
+
+set envcp.value h>60 [envLabelX envLabelY envLabelWidth 14 1 1 1 1] [0]
+set envcp.value.color h>60 [215 215 215 0] [0]
+set envcp.value.margin h>60 [0 0 0 0 0.5 0.5] [0]
+set envcp.fader.fadermode [-1]
+
+
+
+
+
+
+
+
+
+
+; -----------:: MCP ::---------------
+
+set mcpMargin [5 6 0 0]
+set leftMcpButtonMargin [0 3 0 0]
+
+; tracks with a width below this amount will rearrange icons for the "small" mcp format
+set minimumMcpWidth [120]
+
+macro setMcpButtonFromLeft element i j
+  set element + mcpMargin + * leftMcpButtonMargin [i j 1 1] * buttonSize [i j 1 1]
+endmacro
+
+macro setMcpRecArm
+  setMcpButtonFromLeft mcp.recarm 0 0
+endmacro
+
+
+macro setMcpLabel
+
+  set mcpLabelWidth - mcp.size{0} + buttonSize{w} + leftMcpButtonMargin{0} 12
+  set mcp.label [26 7 mcpLabelWidth 15 0 0 1 0]
+  set mcp.label.margin [0 0 0 0 0.5 0]
+  set mcp.label.color [215 215 215]
+endmacro
+
+macro setMcpFxIn
+  setMcpButtonFromLeft mcp.fxin 0 1
+endmacro
+
+
+macro setMcpFx
+  setMcpButtonFromLeft mcp.fx 1 1
+endmacro
+
+
+macro setMcpIo
+  setMcpButtonFromLeft mcp.io 2 1
+endmacro
+
+
+macro setMcpEnv
+
+  set rowIndex w>minimumMcpWidth{0} [1] [2]
+  set columnIndex w>minimumMcpWidth{0} [3] [0]
+  setMcpButtonFromLeft mcp.env columnIndex{0} rowIndex{0}
+endmacro
+
+
+macro setMcpMute
+
+  set rowIndex w>minimumMcpWidth{0} [1] [2]
+  set columnIndex w>minimumMcpWidth{0} [4] [1]
+  setMcpButtonFromLeft mcp.mute columnIndex{0} rowIndex{0}
+endmacro
+
+
+macro setMcpSolo
+  set rowIndex w>minimumMcpWidth{0} [1] [2]
+  set columnIndex w>minimumMcpWidth{0} [5] [2]
+  setMcpButtonFromLeft mcp.solo columnIndex{0} rowIndex{0}
+endmacro
+
+
+
+macro setMcpPan
+
+  set mcpPanY w>minimumMcpWidth{0} [60] [84]
+  set mcpPanWidth - mcp.size{0} 15
+  set mcp.pan [6 mcpPanY{0} mcpPanWidth 14]
+  set mcp.pan.color [215 215 215 0 215 215 215 0]
+endmacro
+
+
+macro setMcpPanLabel
+
+  set mcpPanLabelY w>minimumMcpWidth{0} [77] [99]
+  set mcp.pan.label [5 mcpPanLabelY{0} mcpPanWidth 14]
+  set mcp.pan.label.color [215 215 215 0]
+  set mcp.pan.label.margin [0 0 0 0 0.5 0.5]
+  set mcp.pan.fadermode [-1]
+endmacro
+
+
+macro setMcpVolume
+
+  set mcpNormalVolX [14]
+  set mcpCompressedVolX [6]
+  set mcpVolX w>minimumMcpWidth{0} mcpNormalVolX mcpCompressedVolX
+
+  set mcpNormalVolY [105]
+  set mcpCompressedVolY [125]
+  set mcpVolY w>minimumMcpWidth{0} mcpNormalVolY mcpCompressedVolY
+
+  set mcpNormalVolHeight / * mcp.size{1} 7 13
+  set mcpCompressedVolHeight - / * mcp.size{1} 7 13 20
+  set mcpVolHeight w>minimumMcpWidth{0} mcpNormalVolHeight mcpCompressedVolHeight
+  
+  set mcp.volume [mcpVolX{0} mcpVolY{0} 22 mcpVolHeight 0 0 0 1]
+  set mcp.volume.color [215 215 215 0 215 215 215 0]
+  set mcp.volume.fadermode [-1]
+endmacro
+
+
+macro setMcpMeter
+
+  set mcpNormalMeterX 49
+  set mcpCompressedMeterX 36
+  set mcpMeterX w>minimumMcpWidth{0} mcpNormalMeterX mcpCompressedMeterX
+  
+  set mcpNormalMeterY 105
+  set mcpCompressedMeterY 125
+  set mcpMeterY w>minimumMcpWidth{0} mcpNormalMeterY mcpCompressedMeterY
+
+  set mcpNormalMeterWidth / mcp.size{0} 2
+  set mcpCompressedMeterWidth - / mcp.size{0} 2 9
+  set mcpMeterWidth w>minimumMcpWidth{0} mcpNormalMeterWidth mcpCompressedMeterWidth
+
+  set mcpNormalMeterHeight / * mcp.size{1} 7 13
+  set mcpCompressedMeterHeight - / * mcp.size{1} 7 13 20
+  set mcpMeterHeight w>minimumMcpWidth{0} mcpNormalMeterHeight mcpCompressedMeterHeight
+
+  set mcp.meter [mcpMeterX{0} mcpMeterY{0} mcpMeterWidth{0} mcpMeterHeight{0} 0 0 0 1]
+  
+  set mcp.meter.inputlabel.color [255 255 255]
+  set mcp.meter.inputlabelbox.color [255 255 255]
+  set mcp.meter.readout.color [255 255 255]
+  set mcp.meter.scale.color.lit.bottom [0 0 0]
+  set mcp.meter.scale.color.lit.top [0 0 0]
+  set mcp.meter.scale.color.unlit.bottom [75 75 75
+  set mcp.meter.scale.color.unlit.top [75 75 75
+  set mcp.meter.vu.div [2]
+endmacro
+
+
+macro setMcpVolumeLabel
+
+  set mcpVolLabelY - mcp.size{1} 24
+  set mcpVolLabelWidth - mcp.size{0} 12
+
+  set mcp.volume.label [6 mcpVolLabelY mcpVolLabelWidth 14 1 1 1 1]
+  set mcp.volume.label.color [215 215 215 0]
+  set mcp.volume.label.margin [0 0 0 0 0.5 0.5]
+endmacro
+
+
+macro setAllMcpElements
+
+
+  ; first row
+
+    setMcpRecArm
+    setMcpLabel
+
+
+  ; second row
+
+    setMcpFxIn
+    setMcpFx
+    setMcpIo
+    setMcpEnv
+    setMcpMute
+    setMcpSolo
+
+
+  ; third row
+
+    setMcpPan
+
+
+  ; fourth row
+
+    setMcpPanLabel
+
+
+  ; fifth row
+
+    setMcpVolume
+    setMcpMeter
+
+
+  ; sixth row
+
+    setMcpVolumeLabel
+
+
+  set mcp.extmixer.mode [0]
+  
+  set mcp.fxlist.font [-1 24]
+  set mcp.fxlist.margin [5 0 0 0 0.5]
+  
+  set mcp.sendlist.font [-1 24]
+  set mcp.sendlist.margin [5 0 0 0 0]
+  
+  set mcp.fxparm.font [-1 24]
+  set mcp.fxparm.margin [2 0 0 0 0]
+endmacro
+  
+  
+clear mcp.*
+set mcp.size [132 300]
+setAllMcpElements
+
+Layout "1. big"
+  set mcp.label mcp.label
+EndLayout
+
+Layout "2. small"
+  clear mcp.*
+  set mcp.size [72 300]
+  setAllMcpElements
+EndLayout
+
+Layout "3. label"
+
+  clear mcp.*
+  set mcp.size [30 300]
+  
+  set mcp.label [0 0 w h 0 0 0 0]
+  set mcp.label.color [215 215 215]
+  set mcp.label.margin [0 0 0 0 0.5 0.5]
+  set mcp.extmixer.mode [1]
+  set mcp.extmixer.position [0]
+EndLayout
+
+
+
+
+
+
+
+
+
+
+
+
+; -----------:: MASTER MCP ::--------------
+
+
+
+set masterMcpMargin [19 6 0 0]
+set leftMasterMcpButtonMargin [0 3 0 0]
+
+macro setMasterMcpButtonFromLeft element i j
+  set element + masterMcpMargin + * leftMasterMcpButtonMargin [i j 1 1] * buttonSize [i j 1 1]
+endmacro
+
+
+macro setMasterMcpMenu
+  set master.mcp.menubutton [7 7 17 14 0 0 0 0] 
+endmacro
+
+macro setMasterMcpLabel
+
+  set masterMcpLabelWidth - master.mcp.size{0} + buttonSize{w} + leftMasterMcpButtonMargin{0} 12
+  set master.mcp.label [26 6 masterMcpLabelWidth 15 0 0 1 0]
+  set master.mcp.label.margin [0 0 0 0 0.5 0]
+  set master.mcp.label.color [215 215 215]
+endmacro
+
+
+macro setMasterMcpMono
+  set master.mcp.mono [6 29 33 20 0 0 0 0]
+endmacro
+
+macro setMasterMcpFx
+  setMasterMcpButtonFromLeft master.mcp.fx 1 1
+endmacro
+
+
+macro setMasterMcpIo
+  setMasterMcpButtonFromLeft master.mcp.io 2 1
+endmacro
+
+
+macro setMasterMcpEnv
+  setMasterMcpButtonFromLeft master.mcp.env 3 1
+endmacro
+
+
+macro setMasterMcpMute
+  setMasterMcpButtonFromLeft master.mcp.mute 4 1
+endmacro
+
+
+macro setMasterMcpSolo
+  setMasterMcpButtonFromLeft master.mcp.solo 5 1
+endmacro
+
+
+
+macro setMasterMcpPan
+  set masterMcpPanWidth - master.mcp.size{0} 16
+  set master.mcp.pan [7 60 masterMcpPanWidth 14]
+  set master.mcp.pan.color [215 215 215 0 215 215 215 0]
+endmacro
+
+
+macro setMasterMcpPanLabel
+
+  set master.mcp.pan.label [7 77 masterMcpPanWidth 14]
+  set master.mcp.pan.label.color [215 215 215 0]
+  set master.mcp.pan.label.margin [0 0 0 0 0.5 0.5]
+  set master.mcp.pan.fadermode [-1]
+endmacro
+
+
+macro setMasterMcpVolume
+
+  set masterMcpVolHeight / * master.mcp.size{1} 7 13  
+  set master.mcp.volume [14 105 22 masterMcpVolHeight 0 0 0 1]
+  set master.mcp.volume.color [215 215 215 0 215 215 215 0]
+  set master.mcp.volume.fadermode [-1]
+endmacro
+
+
+macro setMasterMcpMeter
+
+  set masterMcpMeterWidth / master.mcp.size{0} 2
+  set masterMcpMeterHeight / * master.mcp.size{1} 7 13
+
+  set master.mcp.meter [49 105 masterMcpMeterWidth{0} masterMcpMeterHeight{0} 0 0 0 1]
+  
+  set master.mcp.meter.inputlabel.color [255 255 255]
+  set master.mcp.meter.inputlabelbox.color [255 255 255]
+  set master.mcp.meter.readout.color [255 255 255]
+  set master.mcp.meter.scale.color.lit.bottom [0 0 0]
+  set master.mcp.meter.scale.color.lit.top [0 0 0]
+  set master.mcp.meter.scale.color.unlit.bottom [75 75 75
+  set master.mcp.meter.scale.color.unlit.top [75 75 75
+  set master.mcp.meter.vu.div [2]
+endmacro
+
+
+macro setMasterMcpVolumeLabel
+
+  set masterMcpVolLabelY - master.mcp.size{1} 24
+  set masterMcpVolLabelWidth - master.mcp.size{0} 12
+
+  set master.mcp.volume.label [6 masterMcpVolLabelY masterMcpVolLabelWidth 14 1 1 1 1]
+  set master.mcp.volume.label.color [215 215 215 0]
+  set master.mcp.volume.label.margin [0 0 0 0 0.5 0.5]
+endmacro
+
+
+clear master.mcp.*
+set master.mcp.size [146 300]
+
+
+; first row
+
+  setMasterMcpMenu
+  setMasterMcpLabel
+
+
+; second row
+
+  setMasterMcpMono
+  setMasterMcpFx
+  setMasterMcpIo
+  setMasterMcpEnv
+  setMasterMcpMute
+  setMasterMcpSolo
+
+
+; third row
+
+  setMasterMcpPan
+
+
+; fourth row
+
+  setMasterMcpPanLabel
+
+
+; fifth row
+
+  setMasterMcpVolume
+  setMasterMcpMeter
+
+
+; sixth row
+
+  setMasterMcpVolumeLabel
+
+
+set master.mcp.extmixer.mode [0]
+
+set master.mcp.fxlist.font [-1 24]
+set master.mcp.fxlist.margin [5 0 5 0 0.5]
+
+set master.mcp.sendlist.font [-1 24] 
+set master.mcp.sendlist.margin [5 0 5 0 0]
+
+set master.mcp.fxparm.font [-1 24]
+set master.mcp.fxparm.margin [2 0 4 0 0]
+
+
+
+
+
+
+; -----------:: TRANSPORT ::-------------
+
+
+set leftTransportMargin [8 0 0 0]
+set topTransportMargin [0 12 0 0]
+set innerTransportButtonMargin [2 0 0 0]
+set transportButtonSize [35 33 35 33]
+
+macro setTransportButtonFromLeft element i j
+
+  set temp + + leftTransportMargin topTransportMargin * + innerTransportButtonMargin transportButtonSize [i j 1 1]
+  
+  set normalTransportButtonY temp{y}
+  set undockedTransportButtonY + temp{y} 38
+  set transportButtonY ?trans_docked normalTransportButtonY undockedTransportButtonY
+  
+  set element [temp transportButtonY temp temp temp temp temp temp]
+endmacro
+
+
+
+macro setTransportPrevious
+  setTransportButtonFromLeft trans.rew 0 0
+endmacro
+
+  
+macro setTransportStop
+  setTransportButtonFromLeft trans.stop 1 0
+endmacro
+
+
+macro setTransportPlay
+  setTransportButtonFromLeft trans.play 2 0
+endmacro
+
+
+macro setTransportPause
+  setTransportButtonFromLeft trans.pause 3 0
+endmacro
+
+
+macro setTransportNext
+  setTransportButtonFromLeft trans.fwd 4 0
+endmacro
+
+
+macro setTransportRecord
+  setTransportButtonFromLeft trans.rec 5 0
+endmacro
+
+
+macro setTransportRepeat
+  setTransportButtonFromLeft trans.repeat 6 0
+endmacro
+
+
+macro setTransportStatus
+
+  set normalTransportStatusX * w 0.4
+  set undockedTransportStatusX 10
+  set transportStatusX ?trans_docked normalTransportStatusX undockedTransportStatusX
+  
+  set trans.status [transportStatusX 6 350 43]
+  set trans.status.margin [0 0 0 0 0.5 0.5]
+endmacro
+
+
+macro setTransportRate
+  
+  set transportRateX 275
+  set trans.rate ?trans_docked ?trans_flags&2 [transportRateX{0} 8 84 34 0 0 0 0] [0] [0]
+  set trans.rate.margin [8 0 8 0 0]
+  set trans.rate.fader [0]
+endmacro
+
+
+
+set transportSelectionWidth [300]
+
+macro setTransportSelection
+
+  set normalTransportSelectionX - w 300 
+  set undockedTransportSelectionX 4
+  set transportSelectionX ?trans_docked normalTransportSelectionX undockedTransportSelectionX
+
+  set normalTransportSelectionY 4
+  set undockedTransportSelectionY 85
+  set transportSelectionY ?trans_docked normalTransportSelectionY undockedTransportSelectionY
+
+  set trans.sel  [transportSelectionX{0} transportSelectionY{0} transportSelectionWidth{0} 40]
+  set trans.sel.font [-1]
+  set trans.sel.color [175 175 175]
+  set trans.sel.margin [8 0 8 0 0]
+endmacro
+
+set transportTimeSignatureWidth [40]
+set transportTimeSignatureMargin [80]
+
+macro setTransportTimeSignature
+
+  set transportTimeSignatureX - w + + transportTimeSignatureMargin{0} transportSelectionWidth{0} transportTimeSignatureWidth{0}
+  set trans.curtimesig ?trans_docked ?trans_flags&4 [transportTimeSignatureX 4 transportTimeSignatureWidth{0} 34] [0] [0]
+  set trans.curtimesig.font [-1]
+  set trans.curtimesig.margin [0 0 0 0 0.5]
+endmacro
+
+set transportBpmWidth [45]
+set transportBpmMargin [40]
+
+macro setTransportBpm
+
+  set transportBpmX - w + + + + transportBpmMargin{0} transportBpmWidth{0} transportTimeSignatureMargin{0} transportSelectionWidth{0} transportTimeSignatureWidth{0}
+
+  set trans.bpm.tap ?trans_docked [transportBpmX 6 transportBpmWidth{0} 17] [0]
+  set trans.bpm.tap.font [-1]
+  set trans.bpm.tap.margin [3 2 2 0 0.5]
+  
+  set trans.bpm.edit ?trans_docked [transportBpmX 6 45 34] [0]
+  set trans.bpm.edit.font [-1]
+  set trans.bpm.edit.margin [1 13 0 0 0.5]
+  
+endmacro
+
+
+
+
+
+clear trans.*
+
+; size
+  set trans.size [30000 10000]
+  set trans.size.dockedheight [43]
+  set trans.size.minmax ?trans_docked [100 43 4000 4000] [292 119 4000 4000]
+  
+; transport buttons
+
+  setTransportPrevious
+  setTransportStop
+  setTransportPlay
+  setTransportPause
+  setTransportNext
+  setTransportRecord
+  setTransportRepeat
+
+
+; playrate
+
+  setTransportRate
+
+
+; status
+
+  setTransportStatus
+  
+
+; selection
+
+  setTransportSelection
+
+
+; time signature
+
+  setTransportTimeSignature
+
+
+; bpm
+
+  setTransportBpm
+
+
+
+front trans.bpm.edit trans.bpm.tap
