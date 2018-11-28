@@ -1,5 +1,14 @@
 
+simple dark theme
+
 ### [download](https://github.com/benjohnson2001/DarkTerminal/raw/master/DarkTerminal.ReaperThemeZip)
+
+
+tcp:
+![tcp](tcp.png)
+
+mcp:
+![mcp](mcp.png)
 
 #### fonts:
 
@@ -10,6 +19,6 @@ WALTER fonts 1-8 are not used, every font specified in the theme uses the "Volum
 - Transport status font: Pixel Operator, Bold, 36         [download](https://github.com/benjohnson2001/DarkTerminal/raw/master/PixelOperator-Bold.ttf)
 - Media item label font: ClassicVGA, 9
 
-![tcp](tcp.png)
-![mcp](mcp.png)
+
+I also recommend removing the toolbars
 ![remove toolbars](removeToolbars.gif)
