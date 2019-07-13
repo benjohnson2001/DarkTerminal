@@ -101,7 +101,7 @@ macro setTcpLabel
   set tcpLabelWidth w>minimumTcpWidth{0} normalTcpLabel compressedTcpLabel
   set tcp.label [26 4 tcpLabelWidth 16 0 0 1 0]
   set tcp.label.margin [0 0 0 0 0.5 0]
-  set tcp.label.color [215 215 215]
+  set tcp.label.color [175 175 175]
 endmacro
 
 macro setTcpSolo
@@ -156,7 +156,7 @@ macro setTcpVolumeFader
   
   set tcp.volume h>70 w>minimumTcpWidth{0} normalVolume h>90 compressedVolume [0] [0]
   
-  set tcp.volume.color [215 215 215 0 215 215 215 0]
+  set tcp.volume.color [175 175 175 0 175 175 175 0]
   set tcp.volume.fadermode [-1]
 endmacro
 
@@ -168,7 +168,7 @@ macro setTcpVolumeLabel
   set compressedVolumeLabel [10 compressedVolumeLabelY{0} 250 14 0 1 1 1]
 
   set tcp.volume.label h>70 w>minimumTcpWidth{0} normalVolumeLabel h>90 compressedVolumeLabel [0] [0]
-  set tcp.volume.label.color [215 215 215 0]
+  set tcp.volume.label.color [175 175 175 0]
   set tcp.volume.label.margin [0 0 0 0 0 0]
 endmacro
 
@@ -180,7 +180,7 @@ macro setTcpPanFader
   set compressedPan [6 65 compressedPanWidth 12 0 1 1 1]
 
   set tcp.pan h>70 w>minimumTcpWidth{0} normalPan h>minimumTcpHeight{0} compressedPan [0] [0]
-  set tcp.pan.color [215 215 215 0 215 215 215 0]
+  set tcp.pan.color [175 175 175 0 175 175 175 0]
   set tcp.pan.fadermode [-1]
 endmacro
 
@@ -191,7 +191,7 @@ macro setTcpPanLabel
   set compressedPanLabel [6 77 compressedPanLabelWidth 14 0 1 1 1]
 
   set tcp.pan.label h>70 w>minimumTcpWidth{0} normalPanLabel h>minimumTcpHeight{0} compressedPanLabel [0] [0]
-  set tcp.pan.label.color [215 215 215 0]
+  set tcp.pan.label.color [175 175 175 0]
   set tcp.pan.label.margin [0 0 0 0 0.5 0.5]
 endmacro
 
@@ -269,7 +269,7 @@ Layout "2. label"
   
   set tcp.label [0 tcpLabelMessageY tcpLabelMessageWidth 20 0 0 0 0]
   set tcp.label.margin [0 0 0 0 0.5 0.5]
-  set tcp.label.color [215 215 215 0]
+  set tcp.label.color [175 175 175 0]
 
   set folderCompressX - tcp.size{0} 20
   set tcp.foldercomp [folderCompressX 2 18 15 1 0 1 0]
@@ -340,7 +340,7 @@ macro setMasterTcpLabel
   set tcpLabelWidth w>minimumMasterTcpWidth{0} normalMasterTcpLabel compressedMasterTcpLabel
   set master.tcp.label [26 4 tcpLabelWidth 16 0 0 1 0]
   set master.tcp.label.margin [0 0 0 0 0.5 0]
-  set master.tcp.label.color [215 215 215]
+  set master.tcp.label.color [175 175 175]
 endmacro
 
 macro setMasterTcpSolo
@@ -405,7 +405,7 @@ macro setMasterTcpVolumeFader
   
   set master.tcp.volume h>70 w>minimumMasterTcpWidth{0} normalVolume h>90 compressedVolume [0] [0]
   
-  set master.tcp.volume.color [215 215 215 0 215 215 215 0]
+  set master.tcp.volume.color [175 175 175 0 175 175 175 0]
   set master.tcp.volume.fadermode [-1]
 endmacro
 
@@ -417,7 +417,7 @@ macro setMasterTcpVolumeLabel
   set compressedVolumeLabel [10 compressedVolumeLabelY{0} 250 14 0 1 1 1]
 
   set master.tcp.volume.label h>70 w>minimumMasterTcpWidth{0} normalVolumeLabel h>90 compressedVolumeLabel [0] [0]
-  set master.tcp.volume.label.color [215 215 215 0]
+  set master.tcp.volume.label.color [175 175 175 0]
   set master.tcp.volume.label.margin [0 0 0 0 0 0]
 endmacro
 
@@ -429,7 +429,7 @@ macro setMasterTcpPanFader
   set compressedPan [6 65 compressedPanWidth 12 0 1 1 1]
 
   set master.tcp.pan h>70 w>minimumMasterTcpWidth{0} normalPan h>minimumMasterTcpHeight{0} compressedPan [0] [0]
-  set master.tcp.pan.color [215 215 215 0 215 215 215 0]
+  set master.tcp.pan.color [175 175 175 0 175 175 175 0]
   set master.tcp.pan.fadermode [-1]
 endmacro
 
@@ -440,7 +440,7 @@ macro setMasterTcpPanLabel
   set compressedPanLabel [6 77 compressedPanLabelWidth 14 0 1 1 1]
 
   set master.tcp.pan.label h>70 w>minimumMasterTcpWidth{0} normalPanLabel h>minimumMasterTcpHeight{0} compressedPanLabel [0] [0]
-  set master.tcp.pan.label.color [215 215 215 0]
+  set master.tcp.pan.label.color [175 175 175 0]
   set master.tcp.pan.label.margin [0 0 0 0 0.5 0.5]
 endmacro
 
@@ -549,7 +549,7 @@ set envLabelX + + envMargin rightEnvButtonMargin * buttonSize + [1 1 1 1] [i j 1
 
 set envcp.label [envLabelX 4 envLabelWidth 16 0 0 1 0]
 set envcp.label.margin [0 0 0 0 0.5 0]
-set envcp.label.color [215 215 215]
+set envcp.label.color [175 175 175]
 
 setEnvButtonFromRight envcp.hide 0 0
 setEnvButtonFromRight envcp.bypass 1 0
@@ -557,8 +557,8 @@ setEnvButtonFromRight envcp.bypass 1 0
 setFxEnvButtonFromRight envcp.learn 2 0
 setFxEnvButtonFromRight envcp.mod 3 0
 
-set envcp.label.color [215 215 215]
-set envcp.value.color [215 215 215]
+set envcp.label.color [175 175 175]
+set envcp.value.color [175 175 175]
 set envcp.fader.color [0 0 0 0 0 0 0 0]
 
 
@@ -574,7 +574,7 @@ set envLabelY - envcp.size{1} 30
 set envLabelWidth / * envcp.size{0} 1 4
 
 set envcp.value h>60 [envLabelX envLabelY envLabelWidth 14 1 1 1 1] [0]
-set envcp.value.color h>60 [215 215 215 0] [0]
+set envcp.value.color h>60 [175 175 175 0] [0]
 set envcp.value.margin h>60 [0 0 0 0 0.5 0.5] [0]
 set envcp.fader.fadermode [-1]
 
@@ -609,7 +609,7 @@ macro setMcpLabel
   set mcpLabelWidth - mcp.size{0} + buttonSize{w} + leftMcpButtonMargin{0} 12
   set mcp.label [26 7 mcpLabelWidth 15 0 0 1 0]
   set mcp.label.margin [0 0 0 0 0.5 0]
-  set mcp.label.color [215 215 215]
+  set mcp.label.color [175 175 175]
 endmacro
 
 macro setMcpFxIn
@@ -656,7 +656,7 @@ macro setMcpPan
   set mcpPanY w>minimumMcpWidth{0} [60] [84]
   set mcpPanWidth - mcp.size{0} 15
   set mcp.pan [6 mcpPanY{0} mcpPanWidth 14]
-  set mcp.pan.color [215 215 215 0 215 215 215 0]
+  set mcp.pan.color [175 175 175 0 175 175 175 0]
 endmacro
 
 
@@ -664,7 +664,7 @@ macro setMcpPanLabel
 
   set mcpPanLabelY w>minimumMcpWidth{0} [77] [99]
   set mcp.pan.label [5 mcpPanLabelY{0} mcpPanWidth 14]
-  set mcp.pan.label.color [215 215 215 0]
+  set mcp.pan.label.color [175 175 175 0]
   set mcp.pan.label.margin [0 0 0 0 0.5 0.5]
   set mcp.pan.fadermode [-1]
 endmacro
@@ -685,7 +685,7 @@ macro setMcpVolume
   set mcpVolHeight w>minimumMcpWidth{0} mcpNormalVolHeight mcpCompressedVolHeight
   
   set mcp.volume [mcpVolX{0} mcpVolY{0} 22 mcpVolHeight 0 0 0 1]
-  set mcp.volume.color [215 215 215 0 215 215 215 0]
+  set mcp.volume.color [175 175 175 0 175 175 175 0]
   set mcp.volume.fadermode [-1]
 endmacro
 
@@ -727,7 +727,7 @@ macro setMcpVolumeLabel
   set mcpVolLabelWidth - mcp.size{0} 12
 
   set mcp.volume.label [6 mcpVolLabelY mcpVolLabelWidth 14 1 1 1 1]
-  set mcp.volume.label.color [215 215 215 0]
+  set mcp.volume.label.color [175 175 175 0]
   set mcp.volume.label.margin [0 0 0 0 0.5 0.5]
 endmacro
 
@@ -805,7 +805,7 @@ Layout "3. label"
   set mcp.size [30 300]
   
   set mcp.label [0 0 w h 0 0 0 0]
-  set mcp.label.color [215 215 215]
+  set mcp.label.color [175 175 175]
   set mcp.label.margin [0 0 0 0 0.5 0.5]
   set mcp.extmixer.mode [1]
   set mcp.extmixer.position [0]
@@ -843,7 +843,7 @@ macro setMasterMcpLabel
   set masterMcpLabelWidth - master.mcp.size{0} + buttonSize{w} + leftMasterMcpButtonMargin{0} 12
   set master.mcp.label [26 6 masterMcpLabelWidth 15 0 0 1 0]
   set master.mcp.label.margin [0 0 0 0 0.5 0]
-  set master.mcp.label.color [215 215 215]
+  set master.mcp.label.color [175 175 175]
 endmacro
 
 
@@ -880,14 +880,14 @@ endmacro
 macro setMasterMcpPan
   set masterMcpPanWidth - master.mcp.size{0} 16
   set master.mcp.pan [7 60 masterMcpPanWidth 14]
-  set master.mcp.pan.color [215 215 215 0 215 215 215 0]
+  set master.mcp.pan.color [175 175 175 0 175 175 175 0]
 endmacro
 
 
 macro setMasterMcpPanLabel
 
   set master.mcp.pan.label [7 77 masterMcpPanWidth 14]
-  set master.mcp.pan.label.color [215 215 215 0]
+  set master.mcp.pan.label.color [175 175 175 0]
   set master.mcp.pan.label.margin [0 0 0 0 0.5 0.5]
   set master.mcp.pan.fadermode [-1]
 endmacro
@@ -897,7 +897,7 @@ macro setMasterMcpVolume
 
   set masterMcpVolHeight / * master.mcp.size{1} 7 13  
   set master.mcp.volume [14 105 22 masterMcpVolHeight 0 0 0 1]
-  set master.mcp.volume.color [215 215 215 0 215 215 215 0]
+  set master.mcp.volume.color [175 175 175 0 175 175 175 0]
   set master.mcp.volume.fadermode [-1]
 endmacro
 
@@ -926,7 +926,7 @@ macro setMasterMcpVolumeLabel
   set masterMcpVolLabelWidth - master.mcp.size{0} 12
 
   set master.mcp.volume.label [6 masterMcpVolLabelY masterMcpVolLabelWidth 14 1 1 1 1]
-  set master.mcp.volume.label.color [215 215 215 0]
+  set master.mcp.volume.label.color [175 175 175 0]
   set master.mcp.volume.label.margin [0 0 0 0 0.5 0.5]
 endmacro
 
