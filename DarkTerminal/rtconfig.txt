@@ -75,12 +75,14 @@ macro setTcpButton element i j
   
   set temp + rightTcpButtonMargin * buttonSize [i rowIndex 1 1]
   set normalXMargin - tcp.size{0} + + temp{x} folderMargin{x} buttonSize{w}
-  set compressedXMargin - tcp.size{0} 100
+  set compressedXMargin - tcp.size{0} 50
   
   set xMargin w>minimumTcpWidth{0} normalXMargin compressedXMargin
   
   set elementFromTheRight [xMargin temp temp temp 1 0 1 0]
-  set elementFromTheLeft + leftTcpButtonMargin * buttonSize [i rowIndex 1 1]
+  set buttonIndex - 5 i
+  set elementFromTheLeft + leftTcpButtonMargin * buttonSize [buttonIndex rowIndex 1 1]
+  ; set elementFromTheLeft [normalXMargin temp temp temp 1 0 1 0]
   
   set element w>minimumTcpWidth{0} elementFromTheRight h>47 elementFromTheLeft [0]
 endmacro
@@ -240,11 +242,11 @@ set tcp.size [300 100 50]
   
 ; bottom row
 
-  setTcpVolumeFader
-  setTcpVolumeLabel
+;  setTcpVolumeFader
+;  setTcpVolumeLabel
   
-  setTcpPanFader
-  setTcpPanLabel
+;  setTcpPanFader
+;  setTcpPanLabel
   
   setTcpFolderButton
 
@@ -323,8 +325,8 @@ macro setMasterTcpButton element i j
   set xMargin w>minimumMasterTcpWidth{0} normalXMargin compressedXMargin
   
   set elementFromTheRight [xMargin temp temp temp 1 0 1 0]
-  set elementFromTheLeft + leftMasterTcpButtonMargin * buttonSize [i rowIndex 1 1]
-  
+  set buttonIndex - 4 i
+  set elementFromTheLeft + leftMasterTcpButtonMargin * buttonSize [buttonIndex rowIndex 1 1]  
   set element w>minimumMasterTcpWidth{0} elementFromTheRight h>47 elementFromTheLeft [0]
 endmacro
 
@@ -489,11 +491,11 @@ set master.tcp.size [300 100 50]
   
 ; bottom row
 
-  setMasterTcpVolumeFader
-  setMasterTcpVolumeLabel
+;  setMasterTcpVolumeFader
+;  setMasterTcpVolumeLabel
   
-  setMasterTcpPanFader
-  setMasterTcpPanLabel
+;  setMasterTcpPanFader
+;  setMasterTcpPanLabel
   
   setMasterTcpFolderButton
 
@@ -599,6 +601,10 @@ macro setMcpButtonFromLeft element i j
   set element + mcpMargin + * leftMcpButtonMargin [i j 1 1] * buttonSize [i j 1 1]
 endmacro
 
+macro setMcpButtonFromLeftIfLayoutIsBig element i j
+  set element w>minimumMcpWidth{0} + mcpMargin + * leftMcpButtonMargin [i j 1 1] * buttonSize [i j 1 1]
+endmacro
+
 macro setMcpRecArm
   setMcpButtonFromLeft mcp.recarm 0 0
 endmacro
@@ -606,24 +612,28 @@ endmacro
 
 macro setMcpLabel
 
-  set mcpLabelWidth - mcp.size{0} + buttonSize{w} + leftMcpButtonMargin{0} 12
-  set mcp.label [26 7 mcpLabelWidth 15 0 0 1 0]
+  set mcpLabelXPosition 4
+  set mcpLabelWidth - mcp.size{0} 10
+
+  set mcp.label [mcpLabelXPosition 6 mcpLabelWidth 15 1 0 1 0]
   set mcp.label.margin [0 0 0 0 0.5 0]
   set mcp.label.color [175 175 175]
 endmacro
 
 macro setMcpFxIn
-  setMcpButtonFromLeft mcp.fxin 0 1
+  setMcpButtonFromLeftIfLayoutIsBig mcp.fxin 0 1
 endmacro
 
 
 macro setMcpFx
-  setMcpButtonFromLeft mcp.fx 1 1
+  set rowIndex w>minimumMcpWidth{0} [1] [1]
+  set columnIndex w>minimumMcpWidth{0} [1] [0]
+  setMcpButtonFromLeft mcp.fx columnIndex{0} rowIndex{0}
 endmacro
 
 
 macro setMcpIo
-  setMcpButtonFromLeft mcp.io 2 1
+  setMcpButtonFromLeftIfLayoutIsBig mcp.io 2 1
 endmacro
 
 
@@ -631,20 +641,20 @@ macro setMcpEnv
 
   set rowIndex w>minimumMcpWidth{0} [1] [2]
   set columnIndex w>minimumMcpWidth{0} [3] [0]
-  setMcpButtonFromLeft mcp.env columnIndex{0} rowIndex{0}
+  setMcpButtonFromLeftIfLayoutIsBig mcp.env columnIndex{0} rowIndex{0}
 endmacro
 
 
 macro setMcpMute
 
-  set rowIndex w>minimumMcpWidth{0} [1] [2]
+  set rowIndex w>minimumMcpWidth{0} [1] [1]
   set columnIndex w>minimumMcpWidth{0} [4] [1]
   setMcpButtonFromLeft mcp.mute columnIndex{0} rowIndex{0}
 endmacro
 
 
 macro setMcpSolo
-  set rowIndex w>minimumMcpWidth{0} [1] [2]
+  set rowIndex w>minimumMcpWidth{0} [1] [1]
   set columnIndex w>minimumMcpWidth{0} [5] [2]
   setMcpButtonFromLeft mcp.solo columnIndex{0} rowIndex{0}
 endmacro
@@ -692,20 +702,20 @@ endmacro
 
 macro setMcpMeter
 
-  set mcpNormalMeterX 49
-  set mcpCompressedMeterX 36
+  set mcpNormalMeterX 6
+  set mcpCompressedMeterX 6
   set mcpMeterX w>minimumMcpWidth{0} mcpNormalMeterX mcpCompressedMeterX
   
-  set mcpNormalMeterY 105
-  set mcpCompressedMeterY 125
+  set mcpNormalMeterY 54
+  set mcpCompressedMeterY 54
   set mcpMeterY w>minimumMcpWidth{0} mcpNormalMeterY mcpCompressedMeterY
 
-  set mcpNormalMeterWidth / mcp.size{0} 2
-  set mcpCompressedMeterWidth - / mcp.size{0} 2 9
+  set mcpNormalMeterWidth - mcp.size{0} 16
+  set mcpCompressedMeterWidth - mcp.size{0} 16
   set mcpMeterWidth w>minimumMcpWidth{0} mcpNormalMeterWidth mcpCompressedMeterWidth
 
-  set mcpNormalMeterHeight / * mcp.size{1} 7 13
-  set mcpCompressedMeterHeight - / * mcp.size{1} 7 13 20
+  set mcpNormalMeterHeight / * mcp.size{1} 8 10
+  set mcpCompressedMeterHeight / * mcp.size{1} 8 10
   set mcpMeterHeight w>minimumMcpWidth{0} mcpNormalMeterHeight mcpCompressedMeterHeight
 
   set mcp.meter [mcpMeterX{0} mcpMeterY{0} mcpMeterWidth{0} mcpMeterHeight{0} 0 0 0 1]
@@ -737,7 +747,7 @@ macro setAllMcpElements
 
   ; first row
 
-    setMcpRecArm
+  ;  setMcpRecArm
     setMcpLabel
 
 
@@ -753,23 +763,23 @@ macro setAllMcpElements
 
   ; third row
 
-    setMcpPan
+  ;  setMcpPan
 
 
   ; fourth row
 
-    setMcpPanLabel
+  ;  setMcpPanLabel
 
 
   ; fifth row
 
-    setMcpVolume
+  ;  setMcpVolume
     setMcpMeter
 
 
   ; sixth row
 
-    setMcpVolumeLabel
+  ;  setMcpVolumeLabel
 
 
   set mcp.extmixer.mode [0]
@@ -904,10 +914,10 @@ endmacro
 
 macro setMasterMcpMeter
 
-  set masterMcpMeterWidth / master.mcp.size{0} 2
-  set masterMcpMeterHeight / * master.mcp.size{1} 7 13
+  set masterMcpMeterWidth - mcp.size{0} 2
+  set masterMcpMeterHeight / * mcp.size{1} 8 10
 
-  set master.mcp.meter [49 105 masterMcpMeterWidth{0} masterMcpMeterHeight{0} 0 0 0 1]
+  set master.mcp.meter [7 54 masterMcpMeterWidth{0} masterMcpMeterHeight{0} 0 0 0 1]
   
   set master.mcp.meter.inputlabel.color [255 255 255]
   set master.mcp.meter.inputlabelbox.color [255 255 255]
@@ -953,23 +963,23 @@ set master.mcp.size [146 300]
 
 ; third row
 
-  setMasterMcpPan
+;  setMasterMcpPan
 
 
 ; fourth row
 
-  setMasterMcpPanLabel
+;  setMasterMcpPanLabel
 
 
 ; fifth row
 
-  setMasterMcpVolume
+;  setMasterMcpVolume
   setMasterMcpMeter
 
 
 ; sixth row
 
-  setMasterMcpVolumeLabel
+;  setMasterMcpVolumeLabel
 
 
 set master.mcp.extmixer.mode [0]
